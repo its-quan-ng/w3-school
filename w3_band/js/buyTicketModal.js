@@ -1,10 +1,11 @@
-const buyBtns = document.querySelectorAll('.js-buy-ticket')
-const modal = document.querySelector('.modal')
-const modalClose = document.querySelector('.js-modal-close')
-const modalContainer = document.querySelector('.js-modal-container')
-const payBtn = document.getElementById('buy-ticket')
-const ticketQuantity = document.getElementById('ticket-quantity')
-const ticketEmail = document.getElementById('ticket-email')
+const buyBtns = document.querySelectorAll('.js-buy-ticket');
+const modal = document.querySelector('.modal');
+const modalClose = document.querySelector('.js-modal-close');
+const modalContainer = document.querySelector('.js-modal-container');
+const payBtn = document.getElementById('buy-ticket');
+const ticketQuantity = document.getElementById('ticket-quantity');
+const ticketEmail = document.getElementById('ticket-email');
+const messageElement = document.getElementById('ticket-message');
 
 function showBuyTickets() {
     modal.classList.add('open')
@@ -39,8 +40,21 @@ payBtn.addEventListener('click', function () {
     const quantity = ticketQuantity.value.trim();
     const email = ticketEmail.value.trim();
 
-    console.log('Quantity:', quantity)
-    console.log('Email:', email)
+    if (!isValidQuantity(quantity)) {
+        messageElement.style.color = 'red';
+        messageElement.textContent = 'Please enter a valid ticket quantity (a positive integer).';
+        return;
+    }
+
+    if (!isValidEmail(email)) {
+        messageElement.style.color = 'red';
+        messageElement.textContent = 'Please enter a valid email address.';
+        return;
+    }
+
+    const totalPrice = Number(quantity) * 15;
+    messageElement.style.color = 'green';
+    messageElement.textContent = `Success!  You bought ${quantity} ticket(s). Total: $${totalPrice}. Confirmation sent to ${email}.`;
 })
 
 ticketQuantity.addEventListener('keypress', function(e) {
