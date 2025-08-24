@@ -55,6 +55,9 @@ payBtn.addEventListener('click', function () {
     const totalPrice = Number(quantity) * 15;
     messageElement.style.color = 'green';
     messageElement.textContent = `Success!  You bought ${quantity} ticket(s). Total: $${totalPrice}. Confirmation sent to ${email}.`;
+    ticketQuantity.value = '';
+    ticketEmail.value = '';
+    messageElement.textContent = '';
 })
 
 ticketQuantity.addEventListener('keypress', function(e) {
