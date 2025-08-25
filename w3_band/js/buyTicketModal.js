@@ -1,3 +1,6 @@
+// Import validation functions
+import { validateTicketQuantity, validateEmail, calculatePrice } from './utils.js';
+
 const buyBtns = document.querySelectorAll('.js-buy-ticket');
 const modal = document.querySelector('.modal');
 const modalClose = document.querySelector('.js-modal-close');
@@ -15,15 +18,7 @@ function hideBuyTickets() {
     modal.classList.remove('open')
 }
 
-function isValidQuantity(qty){
-    const number = Number(qty);
-    return Number.isInteger(number) && number > 0;
-}
-
-function isValidEmail(email) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-}
+// Using imported validation functions instead
 
 for (const buyBtn of buyBtns) {
     buyBtn.addEventListener('click', showBuyTickets)
@@ -40,19 +35,19 @@ payBtn.addEventListener('click', function () {
     const quantity = ticketQuantity.value.trim();
     const email = ticketEmail.value.trim();
 
-    if (!isValidQuantity(quantity)) {
+    if (!validateTicketQuantity(quantity)) {
         messageElement.style.color = 'red';
-        messageElement.textContent = 'Please enter a valid ticket quantity (a positive integer).';
+        messageElement.textContent = 'Please enter a valid ticket quantity (1-10).';
         return;
     }
 
-    if (!isValidEmail(email)) {
+    if (!validateEmail(email)) {
         messageElement.style.color = 'red';
         messageElement.textContent = 'Please enter a valid email address.';
         return;
     }
 
-    const totalPrice = Number(quantity) * 15;
+    const totalPrice = calculatePrice(quantity);
     messageElement.style.color = 'green';
     messageElement.textContent = `Success!  You bought ${quantity} ticket(s). Total: $${totalPrice}. Confirmation sent to ${email}.`;
     ticketQuantity.value = '';
@@ -62,12 +57,12 @@ payBtn.addEventListener('click', function () {
 
 ticketQuantity.addEventListener('keypress', function(e) {
     if (e.key === 'Enter') {
-        handleBuyTicketClick()
+        payBtn.click()
     }
 })
 
 ticketEmail.addEventListener('keypress', function(e) {
     if (e.key === 'Enter') {
-        handleBuyTicketClick()
+        payBtn.click()
     }
 })
